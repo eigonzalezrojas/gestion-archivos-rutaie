@@ -1,0 +1,87 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url('/img/fondo-colores.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vh-100 {
+    min-height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card{
+    width: 30rem;
+}
+
+.card-body{
+    background-color: azure;
+    padding: 20px;
+}
+
+#loginForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#loginForm input, #loginForm button {
+    width: 100%;
+    margin-bottom: 15px;
+    font-size: 1.2rem; /* Aumenta el tamaño de la fuente */
+    padding: 15px; /* Aumenta el relleno para hacerlos más altos */
+    margin-bottom: 20px; /* Ajusta el margen entre cada componente */
+    border-radius: 5px; /* Opcional: ajusta el radio del borde si es necesario */
+}
+
+#loginForm button {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Estilos adicionales */
+
+#loginForm img {
+    max-width: 100px; /* Ajusta esto según tus necesidades */
+    margin-bottom: 20px;
+}
+
+/* Media queries para dispositivos móviles */
+@media (max-width: 768px) {
+    .card {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    #loginForm input{
+        font-size: 1rem;
+        padding: 10px;
+        width: calc(100% - 20px);
+    }
+
+    #loginForm {
+        width: auto;
+    }
+    #loginForm button {
+        font-size: 1rem; 
+        padding: 12px 20px; 
+        width: 100%; 
+    }
+}
