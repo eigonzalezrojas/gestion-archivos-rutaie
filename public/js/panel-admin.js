@@ -27,8 +27,7 @@ function cargarUsuarios() {
         tbody.innerHTML = '';
         usuarios.forEach(usuario => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${usuario.id}</td>
+            tr.innerHTML = `           
                 <td>${usuario.rut}</td>
                 <td>${usuario.matricula}</td>
                 <td>${usuario.nombre}</td>
@@ -36,7 +35,7 @@ function cargarUsuarios() {
                 <td>${usuario.correo}</td>
                 <td>${usuario.rol}</td>
                 <td>
-                    <button class="btn btn-primary btn-sm">Editar</button>
+                    <button class="btn btn-primary btn-sm" onclick="abrirModalEdicion(${usuario.id})">Editar</button>
                     <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${usuario.id})">Eliminar</button>
                 </td>
             `;
@@ -102,6 +101,95 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+
+//Abrir modal editar usuario
+let modalEditarUsuario = new bootstrap.Modal(document.getElementById('modalEditarUsuario'));
+function abrirModalEdicion(idUsuario) {
+    obtenerDatosUsuario(idUsuario, function(usuario) {
+        document.getElementById('editarUsuarioId').value = idUsuario;
+        document.getElementById('editUserRut').value = usuario.rut;
+        document.getElementById('editUserMatricula').value = usuario.matricula;
+        document.getElementById('editUserNombre').value = usuario.nombre;
+        document.getElementById('editUsuarioCarrera').value = usuario.carrera;
+        document.getElementById('editUsuarioCorreo').value = usuario.correo;
+        document.getElementById('editUsuarioRol').value = usuario.rol;
+        document.getElementById('editUsuarioClave').value = usuario.clave;
+
+        // Abre el modal
+        modalEditarUsuario.show();
+    });
+}
+
+// Obtener datos usuario
+function obtenerDatosUsuario(idUsuario, callback) {
+    fetch(`/obtener-datos-usuario/${idUsuario}`)
+    .then(response => response.json())
+    .then(data => {
+        callback(data);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+
+// Editar usuario
+document.getElementById('formEditarUsuario').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const usuarioId = document.getElementById('editarUsuarioId').value;
+    const usuarioRut = document.getElementById('editUserRut').value;
+    const usuarioMatricula = document.getElementById('editUserMatricula').value;
+    const usuarioNombre = document.getElementById('editUserNombre').value;
+    const usuarioCarrera = document.getElementById('editUsuarioCarrera').value;
+    const usuarioCorreo = document.getElementById('editUsuarioCorreo').value;
+    const usuarioClave = document.getElementById('editUsuarioClave').value;
+    const usuarioRol = document.getElementById('editUsuarioRol').value;    
+
+    // Y luego en el objeto usuarioData, usa estas variables
+    const usuarioData = {
+        rut: usuarioRut,
+        matricula: usuarioMatricula,
+        nombre: usuarioNombre,
+        carrera: usuarioCarrera,
+        correo: usuarioCorreo,
+        clave: usuarioClave,
+        rol: usuarioRol
+    };
+
+    fetch(`/editar-usuario/${usuarioId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(usuarioData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Respuesta del servidor no es OK');
+        }
+        return response.json();
+    })
+    .then(data => {        
+        modalEditarUsuario.hide();        
+        cargarUsuarios();
+        Swal.fire({
+            title: '¡Éxito!',
+            text: 'Usuario actualizado exitosamente',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            title: 'Error',
+            text: 'Hubo un problema al actualizar el usuario',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    });
+});
+
 
 
 // ELiminar usuario

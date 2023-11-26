@@ -133,6 +133,49 @@ app.post('/crear-usuario', (req, res) => {
 });
 
 
+// Editar usuario
+app.put('/editar-usuario/:id', (req, res) => {
+  const idUsuario = req.params.id;
+  const { rut, matricula, clave, nombre, carrera, correo, rol } = req.body;
+
+  bcrypt.hash(clave, saltRounds, (err, hash) => {
+      if (err) {
+          return res.status(500).send('Error al encriptar la contraseña');
+      }
+
+      const query = "UPDATE usuarios SET rut = ?, matricula = ?, clave = ?, nombre = ?, carrera = ?, correo = ?, rol = ? WHERE id = ?";
+      
+      connection.query(query, [rut, matricula, hash, nombre, carrera, correo, rol, idUsuario], (error, results) => {
+          if (error) {
+              return res.status(500).json({ message: 'Error al actualizar el usuario', error: error });
+          }
+          res.json({ message: 'Usuario actualizado con éxito', id: idUsuario });
+      });
+  });
+});
+
+
+
+// Obtner info modal usuario
+app.get('/obtener-datos-usuario/:id', (req, res) => {
+  const idUsuario = req.params.id;
+
+  const query = 'SELECT * FROM usuarios WHERE id = ?';
+
+  connection.query(query, [idUsuario], (error, results) => {
+      if (error) {
+          return res.status(500).json({ message: 'Error al obtener los datos del usuario', error: error });
+      }
+
+      if (results.length > 0) {
+          res.json(results[0]);
+      } else {
+          res.status(404).send('Usuario no encontrado');
+      }
+  });
+});
+
+
 // Eliminar Usuario
 app.delete('/eliminar-usuario/:id', (req, res) => {
   const idUsuario = req.params.id;
