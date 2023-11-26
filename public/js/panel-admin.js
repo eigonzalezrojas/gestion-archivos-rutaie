@@ -48,6 +48,62 @@ function cargarUsuarios() {
     });
 }
 
+
+// Crear usuario
+document.addEventListener('DOMContentLoaded', function () {
+    const formCrearUsuario = document.getElementById('formCrearUsuario');
+    let modal = new bootstrap.Modal(document.getElementById('modalCrearUsuario'));
+    
+    formCrearUsuario.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const usuarioData = {
+            rut: document.getElementById('usuarioRut').value,
+            matricula: document.getElementById('usuarioMatricula').value,
+            nombre: document.getElementById('usuarioNombre').value,
+            carrera: document.getElementById('usuarioCarrera').value,
+            correo: document.getElementById('usuarioEmail').value,
+            clave: document.getElementById('usuarioClave').value,
+            rol: document.getElementById('usuarioRol').value
+        };
+
+        fetch('/crear-usuario', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(usuarioData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Cerrar el modal            
+            modal.hide();            
+        
+            // Actualizar la lista de usuarios
+            cargarUsuarios();
+        
+            // Mostrar mensaje de éxito
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'Usuario creado exitosamente',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Mostrar mensaje de error
+            Swal.fire({
+                title: 'Error',
+                text: 'Hubo un problema al crear el usuario',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        });
+    });
+});
+
+
 // Cerrar sesion
 document.getElementById('cerrarSesion').addEventListener('click', function(event) {
     event.preventDefault();

@@ -63,7 +63,9 @@
                   <ol class="breadcrumb">
                       <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
                   </ol>
-                  <button class="btn btn-primary">Crear Usuario</button>
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrearUsuario">
+                    Crear Usuario
+                  </button>
                 </nav>
                 <!-- Nav para Documentos -->
                 <nav id="navDocumentos" aria-label="breadcrumb" style="display: none;">
@@ -91,7 +93,55 @@
                         </tbody>
                     </table>
                 </div>
-
+                <!-- Modal Crear Usuario -->
+                <div class="modal fade" id="modalCrearUsuario" tabindex="-1" aria-labelledby="modalCrearUsuarioLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="modalCrearUsuarioLabel">Crear Nuevo Usuario</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <form id="formCrearUsuario">
+                                  <!-- Campos del formulario -->
+                                  <div class="mb-3">
+                                    <label for="usuarioRut" class="form-label">Rut</label>
+                                    <input type="text" class="form-control" id="usuarioRut" required>
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="usuarioMatricula" class="form-label">Matricula</label>
+                                    <input type="text" class="form-control" id="usuarioMatricula" required>
+                                  </div>
+                                  <div class="mb-3">
+                                      <label for="usuarioNombre" class="form-label">Nombre</label>
+                                      <input type="text" class="form-control" id="usuarioNombre" required>
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="usuarioCarrera" class="form-label">Carrera</label>
+                                    <input type="text" class="form-control" id="usuarioCarrera" required>
+                                  </div>
+                                  <div class="mb-3">
+                                      <label for="usuarioEmail" class="form-label">Email</label>
+                                      <input type="email" class="form-control" id="usuarioEmail" required>
+                                  </div>
+                                  <div class="mb-3">
+                                      <label for="usuarioClave" class="form-label">Contraseña</label>
+                                      <input type="password" class="form-control" id="usuarioClave" required>
+                                  </div>
+                                  <div class="mb-3">
+                                      <label for="usuarioRol" class="form-label">Rol</label>
+                                      <select class="form-select" id="usuarioRol" required>
+                                          <option value="administrador">Administrador</option>
+                                          <option value="usuario">Usuario</option>
+                                      </select>
+                                  </div>
+                                  <!-- Botón para enviar el formulario -->
+                                  <button type="submit" class="btn btn-primary">Crear</button>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+                </div>
                 <footer class="pt-5 d-flex justify-content-between">
                     <span>Copyright © 2013
                     <ul class="nav m-0">
@@ -112,5 +162,7 @@
     <script src="/js/panel-admin.js"></script>
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.x.x/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

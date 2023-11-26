@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+const saltRounds = 10;
 
 const session = require('express-session');
 
@@ -87,10 +88,8 @@ app.get('/obtener-usuarios', (req, res) => {
   const query = "SELECT * FROM usuarios";
   connection.query(query, (error, results) => {
       if (error) {
-          // Manejar el error adecuadamente
           return res.status(500).json({ message: 'Error al consultar la base de datos' });
       }
-      // Envía los resultados de la consulta
       res.json(results);
   });
 });
@@ -109,6 +108,33 @@ app.post('/cerrar-sesion', (req, res) => {
       res.status(400).send('Sesión no iniciada');
   }
 });
+
+
+// crear usuarios
+app.post('/crear-usuario', (req, res) => {
+  const { rut, matricula, clave, nombre, carrera, correo, rol } = req.body;
+
+  bcrypt.hash(clave, saltRounds, (err, hash) => {
+      if (err) {
+          return res.status(500).send('Error al encriptar la contraseña');
+      }
+
+      const query = "INSERT INTO usuarios (rut, matricula, clave, nombre, carrera, correo, rol) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      
+      connection.query(query, [rut, matricula, hash, nombre, carrera, correo, rol], (error, results) => {
+          if (error) {
+              // Envía un mensaje de error si hay un problema con la consulta SQL
+              return res.status(500).json({ message: 'Error al insertar en la base de datos', error: error });
+          }
+          // Envía una respuesta exitosa si el usuario se ha creado correctamente
+          res.json({ message: 'Usuario creado con éxito', id: results.insertId });
+      });
+  });
+});
+
+
+
+
 
 
 //start - Run app
