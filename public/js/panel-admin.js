@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Cargar Usuarios Tabla
 function cargarUsuarios() {
     fetch('/obtener-usuarios')
     .then(response => {
@@ -36,7 +37,7 @@ function cargarUsuarios() {
                 <td>${usuario.rol}</td>
                 <td>
                     <button class="btn btn-primary btn-sm">Editar</button>
-                    <button class="btn btn-danger btn-sm">Eliminar</button>
+                    <button class="btn btn-danger btn-sm" onclick="eliminarUsuario(${usuario.id})">Eliminar</button>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -47,7 +48,6 @@ function cargarUsuarios() {
         alert('Error al cargar usuarios');
     });
 }
-
 
 // Crear usuario
 document.addEventListener('DOMContentLoaded', function () {
@@ -102,6 +102,49 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+
+// ELiminar usuario
+function eliminarUsuario(idUsuario) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/eliminar-usuario/${idUsuario}`, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                Swal.fire(
+                    '¡Eliminado!',
+                    'El usuario ha sido eliminado.',
+                    'success'
+                );
+                cargarUsuarios(); // Recargar la lista de usuarios
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire(
+                    'Error',
+                    'Hubo un problema al eliminar el usuario',
+                    'error'
+                );
+            });
+        }
+    });
+}
+
 
 
 // Cerrar sesion

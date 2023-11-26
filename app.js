@@ -110,7 +110,7 @@ app.post('/cerrar-sesion', (req, res) => {
 });
 
 
-// crear usuarios
+// Crear Usuario
 app.post('/crear-usuario', (req, res) => {
   const { rut, matricula, clave, nombre, carrera, correo, rol } = req.body;
 
@@ -132,6 +132,19 @@ app.post('/crear-usuario', (req, res) => {
   });
 });
 
+
+// Eliminar Usuario
+app.delete('/eliminar-usuario/:id', (req, res) => {
+  const idUsuario = req.params.id;
+  const query = "DELETE FROM usuarios WHERE id = ?";
+
+  connection.query(query, [idUsuario], (error, results) => {
+      if (error) {
+          return res.status(500).json({ message: 'Error al eliminar el usuario', error: error });
+      }
+      res.json({ message: 'Usuario eliminado con éxito' });
+  });
+});
 
 
 
