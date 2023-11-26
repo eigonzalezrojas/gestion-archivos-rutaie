@@ -1,10 +1,24 @@
 const express = require('express');
-const app = express();
 const path = require('path');
+const bcrypt = require('bcrypt');
+const bodyParser = require('body-parser');
+
+const app = express();
+
 //start - Configuración para servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
-//end - Configuración para servir archivos estáticos
+
+//start - página de inicio de sesión
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'login.html'));
+});
+
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+const session = require('express-session');
 
 
 //start - Conexión a la base de datos
@@ -21,57 +35,80 @@ connection.connect(error => {
   if (error) throw error;
   console.log("Conectado exitosamente a la base de datos.");
 });
-//end - Conexión a la base de datos
 
 
-// Creación de contraseñas usuarios
-const bcrypt = require('bcrypt');
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-
-
-
-//start - página de inicio de sesión
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'login.html'));
-});
-//end - página de inicio de sesión
+//Control de sesion navegador web - cookies
+app.use(session({
+  secret: 'rutaie23#', 
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
 
 
 //start - Verificación credenciales acceso 
-app.post('/', (req, res) => {
-    const { usuario, clave } = req.body;
-    db.query('SELECT * FROM usuarios WHERE rut = ?', [usuario], function(error, results, fields) {
-        if (error) {
-            res.status(500).send('Error en el servidor');
-            return;
-        }
-        if (results.length > 0) {
-            bcrypt.compare(clave, results[0].clave, function(err, result) {
-                if (result) {
-                  res.json({ success: true, redirectUrl: '/panel-admin' });
-                } else {
-                    res.json({ success: false, message: "Contraseña incorrecta" });
-                }
-            });
-        } else {
-            res.json({ success: false, message: "Usuario no encontrado" });
-        }
-    });
+app.post('/login', (req, res) => {
+  const { rut, clave } = req.body;
+  const query = 'SELECT clave, rol FROM usuarios WHERE rut = ?';
+
+  connection.query(query, [rut], async (error, results) => {
+    if (error) throw error;
+
+    if (results.length === 0) {
+      return res.status(401).send('Usuario no encontrado.');
+    }
+
+    const usuario = results[0];
+
+    const claveValida = await bcrypt.compare(clave, usuario.clave);
+    
+    if (!claveValida) {
+      return res.status(401).send('Contraseña incorrecta.');
+    }
+
+    if (usuario.rol === 'administrador') {
+      res.json({ success: true, redirectUrl: 'panel-admin.html' });
+    } else{
+      return res.status(403).send('Acceso denegado. Se requiere rol de administrador.');
+    }
   });
-//end - Verificación credenciales acceso
+});
 
 
 //start - Vista administrador
 app.get('/panel-admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'panel-admin.html'));
 });
-//end - Vista administrador
 
 
-//start - Agregar nuevo usuario
+//start - cargar usuarios dashboard
+app.get('/obtener-usuarios', (req, res) => {
+  // Asumiendo que tienes una conexión a la base de datos configurada
+  const query = "SELECT * FROM usuarios";
+  connection.query(query, (error, results) => {
+      if (error) {
+          // Manejar el error adecuadamente
+          return res.status(500).json({ message: 'Error al consultar la base de datos' });
+      }
+      // Envía los resultados de la consulta
+      res.json(results);
+  });
+});
 
-//end - Agregar nuevo usuario
+
+// start Cerrar sesion
+app.post('/cerrar-sesion', (req, res) => {
+  if (req.session) {
+      req.session.destroy((error) => {
+          if (error) {
+              return res.status(500).send('No se pudo cerrar la sesión');
+          }
+          res.send('Sesión cerrada');
+      });
+  } else {
+      res.status(400).send('Sesión no iniciada');
+  }
+});
 
 
 //start - Run app
@@ -79,4 +116,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor ejecutándose en http://localhost:${port}`);
 });
-//end - Run app
