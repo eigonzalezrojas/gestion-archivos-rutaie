@@ -1,3 +1,44 @@
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.content {
+    flex-grow: 1;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    border-top: 1px solid #e7e7e7;
+}
+
+footer .nav {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+}
+
+footer .nav-item {
+    margin-left: 10px;
+}
+
+footer .nav-item a {
+    text-decoration: none;
+    color: #000;
+}
+
+
 .sidebar {
     position: fixed;
     top: 0;
