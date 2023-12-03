@@ -292,9 +292,10 @@ function cargarArchivos() {
                 <td>${archivo.nombre}</td>
                 <td>${archivo.usuarioNombre}</td>
                 <td>${archivo.rut}</td>
+                <td>${archivo.fecha_subida.split('T')[0]}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="eliminarArchivo(${archivo.id})">Eliminar</button>
-                    <a href="/uploads/${archivo.ruta}" class="btn btn-primary" download="${archivo.nombre}">Descargar</a>
+                    <a href="${archivo.ruta}" class="btn btn-primary" download="${archivo.nombre}">Descargar</a>
                 </td>
             `;
             tbody.appendChild(tr);

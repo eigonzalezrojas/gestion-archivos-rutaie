@@ -10,7 +10,8 @@ const app = express();
 //start - Configuración para servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 
 //start - página de inicio de sesión
@@ -159,7 +160,6 @@ app.put('/editar-usuario/:id', (req, res) => {
 });
 
 
-
 // Obtner info modal usuario
 app.get('/obtener-datos-usuario/:id', (req, res) => {
   const idUsuario = req.params.id;
@@ -197,7 +197,7 @@ app.delete('/eliminar-usuario/:id', (req, res) => {
 // Mostrar archivos panel-admin
 app.get('/obtener-archivos', (req, res) => {
   const query = `
-      SELECT archivos.id, archivos.ruta, archivos.nombre, usuarios.rut, usuarios.nombre AS usuarioNombre
+      SELECT archivos.id, archivos.ruta, archivos.nombre, archivos.fecha_subida, usuarios.rut, usuarios.nombre as usuarioNombre
       FROM archivos
       JOIN usuarios ON archivos.id_usuario = usuarios.id`;
 
@@ -214,7 +214,7 @@ app.get('/obtener-archivos', (req, res) => {
 // Configuración de Multer
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-      cb(null, './uploads/'); 
+      cb(null, 'uploads'); 
   },
   filename: function(req, file, cb) {
     cb(null, file.originalname)
@@ -234,10 +234,13 @@ app.post('/subir-archivo', upload.single('archivo'), (req, res) => {
 
   const nombreArchivo = archivo.filename;
   const rutaArchivo = archivo.path;
+  const fechaActual = new Date();
+  const fechaSubida = fechaActual.toISOString().split('T')[0];
 
-  const query = 'INSERT INTO archivos (nombre, ruta, id_usuario) VALUES (?, ?, ?)';
 
-  connection.query(query, [nombreArchivo, rutaArchivo, usuarioId], (error, results) => {
+  const query = 'INSERT INTO archivos (nombre, ruta, id_usuario, fecha_subida) VALUES (?, ?, ?, ?)';
+
+  connection.query(query, [nombreArchivo, rutaArchivo, usuarioId, fechaSubida], (error, results) => {
     if (error) {
       console.error('Error al guardar el archivo en la base de datos', error);
       return res.status(500).send('Error al guardar el archivo.');
