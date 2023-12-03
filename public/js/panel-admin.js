@@ -1,17 +1,57 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const linkUsuarios = document.getElementById('linkUsuarios');
     const seccionUsuarios = document.getElementById('seccionUsuarios');
+    const seccionDocumentos = document.getElementById('seccionDocumentos');
+    const seccionInicio = document.getElementById('seccionInicio');
     const navUsuarios = document.getElementById('navUsuarios');
     const navDocumentos = document.getElementById('navDocumentos');
+    const formDocumentos = document.getElementById('uploadFormContainer');
 
+    // Ocultar todas las secciones excepto Inicio al cargar la página
+    seccionUsuarios.style.display = 'none';
+    seccionDocumentos.style.display = 'none';
+    seccionInicio.style.display = 'block';
+    formDocumentos.style.display = 'none';
+
+    // Mostrar Usuarios al hacer clic en el enlace Usuarios
     linkUsuarios.addEventListener('click', function(event) {
         event.preventDefault();
         seccionUsuarios.style.display = 'block';
+        seccionInicio.style.display = 'none';
+        seccionDocumentos.style.display = 'none';
         navUsuarios.style.display = 'block';
         navDocumentos.style.display = 'none';
+        formDocumentos.style.display = 'none';
         cargarUsuarios();
     });
+
+    // Mostrar Documentos al hacer clic en el enlace Documentos
+    linkDocumentos.addEventListener('click', function(event) {
+        event.preventDefault();
+        seccionDocumentos.style.display = 'block';
+        seccionInicio.style.display = 'none';
+        seccionUsuarios.style.display = 'none';
+        navDocumentos.style.display = 'block';
+        navUsuarios.style.display = 'none';
+        formDocumentos.style.display = 'block';
+        cargarArchivos();
+    });
+
+    // Añadir lógica para el enlace Inicio si es necesario
+    linkInicio.addEventListener('click', function(event) {
+        event.preventDefault();
+        seccionInicio.style.display = 'block';
+        seccionUsuarios.style.display = 'none';
+        seccionDocumentos.style.display = 'none';
+        navUsuarios.style.display = 'none';
+        navDocumentos.style.display = 'none';
+        formDocumentos.style.display = 'none';
+        // Aquí podrías añadir cualquier lógica específica para la sección Inicio
+    });
 });
+
+
+
+
 
 // Cargar Usuarios Tabla
 function cargarUsuarios() {
@@ -191,7 +231,6 @@ document.getElementById('formEditarUsuario').addEventListener('submit', function
 });
 
 
-
 // ELiminar usuario
 function eliminarUsuario(idUsuario) {
     Swal.fire({
@@ -233,6 +272,83 @@ function eliminarUsuario(idUsuario) {
     });
 }
 
+
+// Cargar tabla con los archivos
+// document.getElementById('crearDocumentoBtn').addEventListener('click', function() {
+//     document.getElementById('seccionDocumentos').style.display = 'block';
+//     cargarArchivos();
+// });
+
+
+function cargarArchivos() {
+    fetch('/obtener-archivos')
+    .then(response => response.json())
+    .then(archivos => {
+        const tbody = document.getElementById('tablaArchivos').querySelector('tbody');
+        tbody.innerHTML = '';
+        archivos.forEach(archivo => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${archivo.nombre}</td>
+                <td>${archivo.usuarioId}</td>
+                <td>
+                    <!-- Botones de acción (por ejemplo, descargar o eliminar) -->
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+
+// Buscar usuario para vincular archivo
+document.getElementById('buscarUsuarioBtn').addEventListener('click', function() {
+    const rut = document.getElementById('rutUsuario').value;
+    fetch('/buscar-usuario?rut=' + rut)
+    .then(response => response.json())
+    .then(data => {
+        const select = document.getElementById('selectUsuario');
+        select.style.display = 'block';
+        select.innerHTML = '';
+
+        if (data.length > 0) {
+            data.forEach(usuario => {
+                const option = document.createElement('option');
+                option.value = usuario.id;
+                option.textContent = usuario.nombre;
+                select.appendChild(option);
+            });
+        } else {
+            select.innerHTML = '<option>No se encontraron usuarios</option>';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+
+// Subir archivo
+document.getElementById('uploadForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+  
+    const formData = new FormData(this);
+    fetch('/subir-archivo', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message);
+        // Maneja la respuesta aquí (por ejemplo, muestra un mensaje de éxito)
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Maneja el error aquí
+    });
+});
+  
 
 
 // Cerrar sesion

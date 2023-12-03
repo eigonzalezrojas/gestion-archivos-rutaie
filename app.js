@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
+const multer = require('multer');
+
 
 const app = express();
 
@@ -186,6 +188,63 @@ app.delete('/eliminar-usuario/:id', (req, res) => {
           return res.status(500).json({ message: 'Error al eliminar el usuario', error: error });
       }
       res.json({ message: 'Usuario eliminado con éxito' });
+  });
+});
+
+
+// Mostrar archivos panel-admin
+app.get('/obtener-archivos', (req, res) => {
+  const query = 'SELECT * FROM archivos'; 
+
+  connection.query(query, (error, results) => {
+      if (error) {
+          console.error('Error en la base de datos', error);
+          return res.status(500).json({ message: 'Error interno del servidor.' });
+      }
+      
+      res.json(results);
+  });
+});
+
+
+
+// Configuración de Multer
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+      cb(null, './uploads/'); 
+  },
+  filename: function(req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// Endpoint para subir archivos
+app.post('/subir-archivo', upload.single('archivo'), (req, res) => {
+  const usuarioId = req.body.usuarioId;
+  const archivo = req.file;
+
+  // Aquí debes guardar la información del archivo en tu base de datos
+  // Por ejemplo, asociar el archivo con usuarioId
+
+  res.json({ message: 'Archivo subido con éxito' });
+});
+
+
+
+// Buscar usuario para vincular archivo
+app.get('/buscar-usuario', (req, res) => {
+  const rut = req.query.rut;
+  const query = 'SELECT id, nombre FROM usuarios WHERE rut = ? AND rol = "usuario"';
+
+  connection.query(query, [rut], (error, results) => {
+      if (error) {
+          console.error('Error en la base de datos', error);
+          return res.status(500).json({ message: 'Error interno del servidor.' });
+      }
+      
+      res.json(results);
   });
 });
 
