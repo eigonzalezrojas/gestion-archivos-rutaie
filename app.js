@@ -4,14 +4,12 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 
-
 const app = express();
 
 //start - Configuración para servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 
 
 //start - página de inicio de sesión
