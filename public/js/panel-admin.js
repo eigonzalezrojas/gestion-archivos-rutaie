@@ -294,6 +294,7 @@ function cargarArchivos() {
                 <td>${archivo.rut}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="eliminarArchivo(${archivo.id})">Eliminar</button>
+                    <a href="/uploads/${archivo.ruta}" class="btn btn-primary" download="${archivo.nombre}">Descargar</a>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -400,7 +401,6 @@ document.getElementById('buscarUsuarioBtn').addEventListener('click', function()
 });
 
 
-
 // Subir archivo
 document.getElementById('uploadForm').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -441,9 +441,7 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
         });
     });
 });
-
   
-
 
 // Cerrar sesion
 document.getElementById('cerrarSesion').addEventListener('click', function(event) {

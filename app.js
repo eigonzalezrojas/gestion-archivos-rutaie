@@ -10,6 +10,8 @@ const app = express();
 //start - Configuración para servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
+app.use('/uploads', express.static('uploads'));
+
 
 //start - página de inicio de sesión
 app.get('/', (req, res) => {
@@ -195,7 +197,7 @@ app.delete('/eliminar-usuario/:id', (req, res) => {
 // Mostrar archivos panel-admin
 app.get('/obtener-archivos', (req, res) => {
   const query = `
-      SELECT archivos.id, archivos.nombre, usuarios.rut, usuarios.nombre AS usuarioNombre
+      SELECT archivos.id, archivos.ruta, archivos.nombre, usuarios.rut, usuarios.nombre AS usuarioNombre
       FROM archivos
       JOIN usuarios ON archivos.id_usuario = usuarios.id`;
 
@@ -215,7 +217,7 @@ const storage = multer.diskStorage({
       cb(null, './uploads/'); 
   },
   filename: function(req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    cb(null, file.originalname)
   }
 });
 
@@ -230,7 +232,7 @@ app.post('/subir-archivo', upload.single('archivo'), (req, res) => {
     return res.status(400).send('No se subió ningún archivo.');
   }
 
-  const nombreArchivo = archivo.originalname;
+  const nombreArchivo = archivo.filename;
   const rutaArchivo = archivo.path;
 
   const query = 'INSERT INTO archivos (nombre, ruta, id_usuario) VALUES (?, ?, ?)';
