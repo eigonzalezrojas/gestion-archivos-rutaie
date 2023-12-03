@@ -1,3 +1,6 @@
+// Declaración global
+let submitArchivoBtn;
+
 document.addEventListener('DOMContentLoaded', function () {
     const seccionUsuarios = document.getElementById('seccionUsuarios');
     const seccionDocumentos = document.getElementById('seccionDocumentos');
@@ -5,6 +8,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const navUsuarios = document.getElementById('navUsuarios');
     const navDocumentos = document.getElementById('navDocumentos');
     const formDocumentos = document.getElementById('uploadFormContainer');
+    submitArchivoBtn = document.getElementById('submitArchivoBtn');
+
+    // Deshabilitar inicialmente el botón de subir archivo
+    if (submitArchivoBtn) {
+        submitArchivoBtn.disabled = true;
+    }
 
     // Ocultar todas las secciones excepto Inicio al cargar la página
     seccionUsuarios.style.display = 'none';
@@ -44,13 +53,9 @@ document.addEventListener('DOMContentLoaded', function () {
         seccionDocumentos.style.display = 'none';
         navUsuarios.style.display = 'none';
         navDocumentos.style.display = 'none';
-        formDocumentos.style.display = 'none';
-        // Aquí podrías añadir cualquier lógica específica para la sección Inicio
+        formDocumentos.style.display = 'none';        
     });
 });
-
-
-
 
 
 // Cargar Usuarios Tabla
@@ -160,6 +165,7 @@ function abrirModalEdicion(idUsuario) {
         modalEditarUsuario.show();
     });
 }
+
 
 // Obtener datos usuario
 function obtenerDatosUsuario(idUsuario, callback) {
@@ -273,13 +279,7 @@ function eliminarUsuario(idUsuario) {
 }
 
 
-// Cargar tabla con los archivos
-// document.getElementById('crearDocumentoBtn').addEventListener('click', function() {
-//     document.getElementById('seccionDocumentos').style.display = 'block';
-//     cargarArchivos();
-// });
-
-
+// Tabla archivos
 function cargarArchivos() {
     fetch('/obtener-archivos')
     .then(response => response.json())
@@ -290,15 +290,57 @@ function cargarArchivos() {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${archivo.nombre}</td>
-                <td>${archivo.usuarioId}</td>
+                <td>${archivo.usuarioNombre}</td>
+                <td>${archivo.rut}</td>
                 <td>
-                    <!-- Botones de acción (por ejemplo, descargar o eliminar) -->
+                    <button class="btn btn-danger btn-sm" onclick="eliminarArchivo(${archivo.id})">Eliminar</button>
                 </td>
             `;
             tbody.appendChild(tr);
         });
     })
     .catch(error => console.error('Error:', error));
+}
+
+
+// Eliminar archivo
+function eliminarArchivo(idArchivo) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/eliminar-archivo/${idArchivo}`, { method: 'DELETE' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                Swal.fire(
+                    'Eliminado',
+                    'El archivo ha sido eliminado con éxito.',
+                    'success'
+                );
+                cargarArchivos();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire(
+                    'Error',
+                    'Hubo un problema al eliminar el archivo',
+                    'error'
+                );
+            });
+        }
+    });
 }
 
 
@@ -319,14 +361,44 @@ document.getElementById('buscarUsuarioBtn').addEventListener('click', function()
                 option.textContent = usuario.nombre;
                 select.appendChild(option);
             });
+            // Habilitar el botón de subir archivo si se encuentran usuarios
+            document.getElementById('submitArchivoBtn').disabled = false;
+
+            // Mensaje Sweet Alert de éxito
+            Swal.fire({
+                title: 'Usuario encontrado',
+                text: 'Selecciona un usuario de la lista.',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            });
         } else {
             select.innerHTML = '<option>No se encontraron usuarios</option>';
+            // Mantener el botón de subir archivo deshabilitado si no hay usuarios
+            document.getElementById('submitArchivoBtn').disabled = true;
+
+            // Mensaje Sweet Alert de error
+            Swal.fire({
+                title: 'Usuario no encontrado',
+                text: 'No se encontraron usuarios con el RUT proporcionado.',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
         }
     })
     .catch(error => {
         console.error('Error:', error);
+        document.getElementById('submitArchivoBtn').disabled = true;
+
+        // Mensaje Sweet Alert de error
+        Swal.fire({
+            title: 'Error',
+            text: 'Hubo un problema al buscar el usuario.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
     });
 });
+
 
 
 // Subir archivo
@@ -334,20 +406,42 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
     event.preventDefault();
   
     const formData = new FormData(this);
+
+
     fetch('/subir-archivo', {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        return response.json();
+    })
     .then(data => {
-        console.log(data.message);
-        // Maneja la respuesta aquí (por ejemplo, muestra un mensaje de éxito)
+        Swal.fire({
+            title: '¡Éxito!',
+            text: data.message,
+            icon: 'success',
+            confirmButtonText: 'Ok'
+        });
+        // Limpia el formulario
+        event.target.reset();
+
+        // Actualiza la lista de archivos si es necesario
+        cargarArchivos();
     })
     .catch(error => {
         console.error('Error:', error);
-        // Maneja el error aquí
+        Swal.fire({
+            title: 'Error',
+            text: 'Hubo un problema al subir el archivo',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
     });
 });
+
   
 
 

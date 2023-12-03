@@ -194,18 +194,19 @@ app.delete('/eliminar-usuario/:id', (req, res) => {
 
 // Mostrar archivos panel-admin
 app.get('/obtener-archivos', (req, res) => {
-  const query = 'SELECT * FROM archivos'; 
+  const query = `
+      SELECT archivos.id, archivos.nombre, usuarios.rut, usuarios.nombre AS usuarioNombre
+      FROM archivos
+      JOIN usuarios ON archivos.id_usuario = usuarios.id`;
 
   connection.query(query, (error, results) => {
       if (error) {
           console.error('Error en la base de datos', error);
           return res.status(500).json({ message: 'Error interno del servidor.' });
       }
-      
       res.json(results);
   });
 });
-
 
 
 // Configuración de Multer
@@ -223,14 +224,42 @@ const upload = multer({ storage: storage });
 // Endpoint para subir archivos
 app.post('/subir-archivo', upload.single('archivo'), (req, res) => {
   const usuarioId = req.body.usuarioId;
-  const archivo = req.file;
+  const archivo = req.file;  
 
-  // Aquí debes guardar la información del archivo en tu base de datos
-  // Por ejemplo, asociar el archivo con usuarioId
+  if (!archivo) {
+    return res.status(400).send('No se subió ningún archivo.');
+  }
 
-  res.json({ message: 'Archivo subido con éxito' });
+  const nombreArchivo = archivo.originalname;
+  const rutaArchivo = archivo.path;
+
+  const query = 'INSERT INTO archivos (nombre, ruta, id_usuario) VALUES (?, ?, ?)';
+
+  connection.query(query, [nombreArchivo, rutaArchivo, usuarioId], (error, results) => {
+    if (error) {
+      console.error('Error al guardar el archivo en la base de datos', error);
+      return res.status(500).send('Error al guardar el archivo.');
+    }
+    res.json({ message: 'Archivo subido con éxito' });
+  });
 });
 
+
+// Endpoint para eliminar archivos
+app.delete('/eliminar-archivo/:id', (req, res) => {
+  const idArchivo = req.params.id;
+
+  const query = 'DELETE FROM archivos WHERE id = ?';
+
+  connection.query(query, [idArchivo], (error, results) => {
+      if (error) {
+          console.error('Error al eliminar el archivo en la base de datos', error);
+          return res.status(500).send('Error al eliminar el archivo.');
+      }
+
+      res.json({ message: 'Archivo eliminado con éxito' });
+  });
+});
 
 
 // Buscar usuario para vincular archivo
@@ -243,7 +272,6 @@ app.get('/buscar-usuario', (req, res) => {
           console.error('Error en la base de datos', error);
           return res.status(500).json({ message: 'Error interno del servidor.' });
       }
-      
       res.json(results);
   });
 });
