@@ -70,10 +70,16 @@ app.post('/login', (req, res) => {
       return res.status(401).send('Contraseña incorrecta.');
     }
 
-    if (usuario.rol === 'administrador') {
-      res.json({ success: true, redirectUrl: 'panel-admin.html' });
-    } else{
-      return res.status(403).send('Acceso denegado. Se requiere rol de administrador.');
+    // Redirige según el rol del usuario
+    switch (usuario.rol) {
+      case 'administrador':
+        res.json({ success: true, redirectUrl: 'panel-admin.html' });
+        break;
+      case 'usuario':
+        res.json({ success: true, redirectUrl: 'panel-user.html' });
+        break;
+      default:
+        return res.status(403).send('Rol no reconocido.');
     }
   });
 });
