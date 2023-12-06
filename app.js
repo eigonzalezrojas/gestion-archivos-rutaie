@@ -286,6 +286,21 @@ app.get('/buscar-usuario', (req, res) => {
 });
 
 
+// Cargar archivos usuario
+app.get('/obtener-archivos', (req, res) => {
+  // Aquí deberás obtener el ID o RUT del usuario de la sesión o token
+  const idUsuario = req.session.usuarioId; // Ajustar según tu lógica de autenticación
+
+  const query = 'SELECT nombre, ruta, fecha FROM archivos WHERE id_usuario = ?';
+  connection.query(query, [idUsuario], (error, results) => {
+      if (error) {
+          console.error('Error al obtener archivos:', error);
+          return res.status(500).send('Error al obtener archivos');
+      }
+
+      res.json(results);
+  });
+});
 
 
 

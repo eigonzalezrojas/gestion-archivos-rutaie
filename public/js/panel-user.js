@@ -45,3 +45,31 @@ document.getElementById('logoutButton').addEventListener('click', function(event
     })
     .catch(error => console.error('Error:', error));
 });
+
+// Carga de archivas asociadas al usuario
+document.addEventListener('DOMContentLoaded', function () {
+    cargarArchivos();
+
+    function cargarArchivos() {
+        fetch('/obtener-archivos')
+            .then(response => response.json())
+            .then(data => mostrarArchivos(data))
+            .catch(error => console.error('Error:', error));
+    }
+
+    function mostrarArchivos(archivos) {
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = '';
+
+        archivos.forEach(archivo => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${archivo.nombre}</td>
+                <td>${archivo.fecha_subida.split('T')[0]}</td>
+                <a href="${archivo.ruta}" class="btn btn-primary btn-sm" download="${archivo.nombre}">Descargar</a>                                
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+});
