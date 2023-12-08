@@ -14,9 +14,13 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 //start - página de inicio de sesión
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'login.html'));
+  res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
+// Ruta para la página de login
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'login.html'));
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
