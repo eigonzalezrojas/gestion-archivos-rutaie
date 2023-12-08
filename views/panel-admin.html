@@ -79,21 +79,41 @@
                         <li class="breadcrumb-item active" aria-current="page">Documentos</li>
                     </ol>
                 </nav>
-                <!-- Tabla para Inicio -->
-                <div id="seccionInicio" style="display: none;">
-                    <table id="tablaInicio" class="table">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Los archivos se cargarán aquí -->
-                        </tbody>
-                    </table>
+                <!-- Información para Inicio -->
+                <div id="seccionInicio" class="container" style="display: none;">
+                    <article class="p-3 mb-2 bg-light text-dark">
+                        <h2 class="text-center">Instrucciones de Uso del Sistema Web</h2>
+                        <section class="mb-3">
+                            <h3>Sección de Inicio</h3>
+                            <p>La sección de inicio está diseñada para ofrecer una interfaz sencilla y eficiente para la gestión de usuarios y documentos.</p>
+                            <ol class="list-group list-group-numbered">
+                                <li class="list-group-item">
+                                    <strong>Acceso a la Sección de Usuarios</strong>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">En la sección de usuarios, se pueden realizar dos acciones principales: <strong>crear</strong> y <strong>editar</strong> usuarios.</li>
+                                        <li class="list-group-item">Existen dos tipos de usuarios: <strong>Administrador</strong> y <strong>Usuario Regular</strong>.</li>
+                                    </ul>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Funcionalidades del Administrador</strong>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">El administrador puede <strong>crear nuevos usuarios</strong>.</li>
+                                        <li class="list-group-item">Además, puede <strong>subir archivos</strong> asociados al RUT de un usuario.</li>
+                                        <li class="list-group-item">Antes de subir un archivo, debe <strong>verificar si el RUT existe</strong> en la tabla de usuarios.</li>
+                                    </ul>
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Funcionalidades del Usuario Regular</strong>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Orientado a <strong>estudiantes o profesionales</strong> con un diploma asociado.</li>
+                                        <li class="list-group-item">Interfaz centrada en un <strong>panel de descargas</strong> para obtener documentos.</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </section>
+                    </article>
                 </div>
+                
                 <!-- Tabla Usuarios -->
                 <div class="table-responsive" id="seccionUsuarios" style="display: none;">
                     <table class="table table-striped table-sm">
