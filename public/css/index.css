@@ -1,0 +1,32 @@
+/* COLORES RUTAIE
+
+#e74528 (rojo)
+#279b98 (verde oscuro)
+#45b9bd (celeste)
+#f59f19 (amarillo)
+*/
+
+@import url(https://fonts.googleapis.com/css?family=Righteous);
+*{
+    font-family: 'Righteous', serif;
+}
+
+
+/* header {
+    background-color: #ffffff;
+}
+ */
+
+/* #section-1{
+    background-color: #e74528;
+} */
+
+/* #unidades-utalca{
+    background-color: #f59f19;
+} */
+
+footer {
+    background-color: #3498DB; 
+}
+
+

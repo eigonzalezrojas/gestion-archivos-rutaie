@@ -2,7 +2,7 @@
 
 const bcrypt = require('bcrypt');
 
-const contraseña = "rutaie#2023$utal";
+const contraseña = "E.gonza.2020";
 const saltRounds = 10;
 
 bcrypt.hash(contraseña, saltRounds, function(err, hash) {
