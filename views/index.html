@@ -40,12 +40,12 @@
   </header>
   <main class="pt-16">
     <img src="/public/img/tira-colores.png" alt="tira-colores" style="width: 100%; height: auto;">    
-    <section class="bg-gray-800 body-font" id="section-1">
+    <section class="bg-gray-800 body-font">
       <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
         <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col items-center text-center mb-16 md:mb-0">
-          <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">¿Tienes alguna idea innovadora que
+          <h1 class="text-white font-medium title-font text-5xl text-center">¿Tienes alguna idea innovadora que
             quieras compartir?</h1>
-          <p class="mb-8 leading-relaxed text-white">Ingresa a nuestros sitios web de apoyo estudiantil y descubre el
+          <p class="mb-8 leading-relaxed text-white text-xl text-center">Ingresa a nuestros sitios web de apoyo estudiantil y descubre el
             camino para hacerla realidad.</p>
           <a href="#unidades-utalca">
             <div class="flex justify-center items-center">
@@ -70,41 +70,79 @@
         </svg>
         <img src="/public/img/Recurso-30.png" alt="tira-colores" style="width: 100%; height: auto;">
       </div>
-      
     </section>
     <section class="bg-gray-800 body-font" id="unidades-utalca">
       <div class="container px-5 py-24 mx-auto">
-        <div class="flex flex-col">
-          <div class="flex flex-wrap sm:flex-row flex-col py-6 mb-12">
-            <h1 class="sm:w-2/5 text-white font-medium title-font text-2xl mb-2 sm:mb-0">Unidades de apoyo estudiantil</h1>
+        <div class="flex flex-col items-center justify-center">
+          <div class="py-6 mb-12">
+            <h1 class="pt-8 text-white font-medium title-font text-5xl text-center">Unidades de apoyo estudiantil</h1>
           </div>
-        </div>
-        
+        </div>  
         <div class="flex flex-wrap justify-center gap-6">
           <!-- Card 1 -->
           <div class="card flex flex-col items-center justify-center w-96 h-96 bg-yellow-500 shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition duration-300 hover:scale-105">
             <img class="my-4 w-3/5" src="/public/img/logo_vcm.png" alt="Logotipo de la Universidad de Talca, Chile">
-            <button class="mt-4 mb-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">IR</button>
-          </div>
-        
+            <a href="https://www.vinculacion.utalca.cl/" target="_blank">
+              <button class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Ingresar</button>
+            </a>            
+          </div>        
           <!-- Card 2 -->
           <div class="card flex flex-col items-center justify-center w-96 h-96 bg-sky-500 shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition duration-300 hover:scale-105">
             <img class="my-4 w-3/5" src="/public/img/logo_innovacion.png" alt="Descripción de la imagen 2">
-            <button class="mt-4 mb-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">IR</button>
-          </div>
-        
+            <a href="https://innovacion.utalca.cl/" target="_blank">
+              <button class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Ingresar</button>
+            </a>
+            
+          </div>        
           <!-- Card 3 -->
           <div class="card flex flex-col items-center justify-center w-96 h-96 bg-red-500 shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition duration-300 hover:scale-105">
             <img class="my-4 w-3/5" src="/public/img/logo_vde.png" alt="Descripción de la imagen 3">
-            <button class="mt-4 mb-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">IR</button>
+            <a href="https://vde.utalca.cl/" target="_blank">
+              <button class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Ingresar</button>
+            </a>            
           </div>
         </div>
-        
-        
-        
-
+      </div>      
+    </section>
+    <section class="bg-gray-800 body-font">
+      <h1 class="pt-8 text-white font-medium title-font text-5xl text-center">Noticias</h1>
+      <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
+        <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col items-center text-center">
+          <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">Estudiantes aprenden sobre innovación y emprendimiento junto al TEC de Monterrey
+            <br class="hidden lg:inline-block">
+          </h1>
+          <p class="mb-8 leading-relaxed text-white">Alumnos/as de distintas carreras participan de iniciativa que les permitirá certificarse en “Emprendimiento con propósito”.</p>
+          <div class="flex justify-center">
+            <a href="https://www.utalca.cl/noticias/estudiantes-aprenden-sobre-innovacion-y-emprendimiento-junto-al-tec-de-monterrey/" target="_blank">
+              <button class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Noticia</button>          
+            </a>            
+          </div>
+        </div>
+        <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
+          <img class="object-cover object-center rounded" alt="hero" src="/public/img/img-estudiantes-noticia.png">
+        </div>
       </div>
     </section>
+    <section class="bg-gray-800 body-font">
+      <h1 class="pt-8 text-white font-medium title-font text-5xl text-center">Canal YouTube</h1>
+      <div class="container mx-auto px-4 py-8">        
+        <h2 class="text-2xl font-semibold text-center mb-8 text-white">YouTube Shorts</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Short 1 -->
+          <div class="w-full h-auto">
+            <iframe class="w-full" style="height: 50vw;" src="https://www.youtube.com/embed/Z4498SaGZ9w" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <!-- Short 2 -->
+          <div class="w-full h-auto">
+            <iframe class="w-full" style="height: 50vw;" src="https://www.youtube.com/embed/eo3Q4Nti9YE" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <!-- Short 3 -->
+          <div class="w-full h-auto">
+            <iframe class="w-full" style="height: 50vw;" src="https://www.youtube.com/embed/7hlbSEA7qQk" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </section>    
     <img src="/public/img/tira-colores.png" alt="tira-colores" style="width: 100%; height: auto;">
   </main>
   <footer>
