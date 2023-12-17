@@ -12,18 +12,25 @@
 }
 
 
-/* header {
-    background-color: #ffffff;
-}
- */
+.custom-hover-underline {
+    position: relative;
+  }
 
-/* #section-1{
-    background-color: #e74528;
-} */
+  .custom-hover-underline::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #60a5fa; 
+    bottom: -2px;
+    left: 0;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
 
-/* #unidades-utalca{
-    background-color: #f59f19;
-} */
+  .custom-hover-underline:hover::after {
+    transform: scaleX(1);
+  }
 
 footer {
     background-color: #3498DB; 
