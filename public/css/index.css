@@ -5,12 +5,14 @@
 #45b9bd (celeste)
 #f59f19 (amarillo)
 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @import url(https://fonts.googleapis.com/css?family=Righteous);
 *{
     font-family: 'Righteous', serif;
 }
-
 
 .custom-hover-underline {
     position: relative;
