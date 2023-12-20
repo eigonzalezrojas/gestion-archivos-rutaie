@@ -35,4 +35,10 @@ footer {
     background-color: #3498DB; 
 }
 
-
+.barra-lateral i {
+  font-size: 24px; 
+  color: #000000; 
+}
+.barra-lateral a:hover i {
+  color: #ffffff; 
+}
