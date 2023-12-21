@@ -22,6 +22,24 @@ app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 
+app.get('/objetivo', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'objetivo.html'));
+});
+
+app.get('/proposito', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'proposito.html'));
+});
+
+app.get('/nosotros', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'nosotros.html'));
+});
+
+app.get('/contacto', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'contacto.html'));
+});
+
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const saltRounds = 10;

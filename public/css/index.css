@@ -11,6 +11,46 @@
     font-family: 'Righteous', serif;
 }
 
+/* Loader */
+
+.loader-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loader-image {
+  width: 120px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.loader-text {
+  font-size: 20px;
+  color: #333;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.fade-in-out {
+  animation: fadeInOut 2s linear infinite;
+}
+
+
+
+
+
 .custom-hover-underline {
     position: relative;
   }
