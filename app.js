@@ -68,49 +68,74 @@ app.use(session({
   secret: 'rutaie23#', 
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { secure: false } //cambiar en caso de https
 }));
 
 
-//start - Verificación credenciales acceso 
+
 app.post('/login', (req, res) => {
   const { rut, clave } = req.body;
-  const query = 'SELECT clave, rol FROM usuarios WHERE rut = ?';
+  const query = 'SELECT * FROM Usuarios WHERE rut = ?';
 
   connection.query(query, [rut], async (error, results) => {
-    if (error) throw error;
+      if (error) {
+          console.error('Error en la consulta:', error);
+          return res.status(500).send('Error en el servidor');
+      }
+  
+      if (results.length === 0) {
+          return res.status(401).send('Usuario no encontrado.');
+      }
+  
+      const usuario = results[0];
+      const claveValida = await bcrypt.compare(clave, usuario.clave);
+      
+      if (!claveValida) {
+          return res.status(401).send('Contraseña incorrecta.');
+      }
+  
+      // Establecer la sesión del usuario aquí
+      req.session.usuario = { id: usuario.id, rol: usuario.rol };        
 
-    if (results.length === 0) {
-      return res.status(401).send('Usuario no encontrado.');
-    }
 
-    const usuario = results[0];
-
-    const claveValida = await bcrypt.compare(clave, usuario.clave);
-    
-    if (!claveValida) {
-      return res.status(401).send('Contraseña incorrecta.');
-    }
-
-    // Redirige según el rol del usuario
-    switch (usuario.rol) {
-      case 'administrador':
-        res.json({ success: true, redirectUrl: 'panel-admin.html' });
-        break;
-      case 'usuario':
-        res.json({ success: true, redirectUrl: 'panel-user.html' });
-        break;
-      default:
-        return res.status(403).send('Rol no reconocido.');
-    }
+      switch (usuario.rol) {
+          case 'administrador':
+              res.json({ success: true, redirectUrl: '/panel-admin' });
+              break;
+          default:
+              res.json({ success: true, redirectUrl: '/panel-user' });
+              break;
+      }
   });
 });
 
+// Middleware para verificar si es administrador
+function verificarEsAdministrador(req, res, next) {
+  if (req.session.usuario && req.session.usuario.rol === 'administrador') {
+      next();
+  } else {
+      res.status(403).send('Acceso denegado. Se requiere rol de administrador.');
+  }
+}
 
-//start - Vista administrador
-app.get('/panel-admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'panel-admin.html'));
+// Middleware para verificar si es usuario
+function verificarEsUsuario(req, res, next) {
+  if (req.session.usuario && req.session.usuario.rol === 'usuario') {
+      next();
+  } else {
+      res.status(403).send('Acceso denegado. Se requiere rol de usuario.');
+  }
+}
+
+// Rutas
+app.get('/panel-admin', verificarEsAdministrador, (req, res) => {
+  res.sendFile(path.join(__dirname, 'private', 'panel-admin.html'));
 });
+
+app.get('/panel-user', verificarEsUsuario, (req, res) => {
+  res.sendFile(path.join(__dirname, 'private', 'panel-user.html'));
+});
+
 
 
 //start - cargar usuarios dashboard
