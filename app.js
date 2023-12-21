@@ -51,6 +51,7 @@ const session = require('express-session');
 const mysql = require('mysql');
 const port = 3000;
 const connection = mysql.createConnection({
+  charset : 'utf8mb4',
   host: 'localhost',
   user: 'root',
   password: '',

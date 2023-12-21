@@ -4,7 +4,9 @@
 <head>
     <link rel="icon" type="image/png" href="img/favicon.png">
     <title>Login-Rutaie</title>
-    <link rel="stylesheet" href="/css/common.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="/css/login.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.x.x/dist/css/bootstrap.min.css">
@@ -13,32 +15,86 @@
 
 </head>
 
-<body>
-    <div class="vh-100 d-flex justify-content-center align-items-center">
-        <div class="card">
-            <div class="card-body">
-                <div class="text-center mb-4">
-                    <center>
-                        <h2 class="card-title">Inicio de Sesión</h2>
-                    </center>
-                </div>
-                <form id="loginForm" action="/login" method="post">
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="rut" name="rut" placeholder="Usuario" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="password" class="form-control" id="clave" name="clave" placeholder="Contraseña"
-                            required>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Ingresar</button>
-                    </div>
-                </form>
+<body class="pt-20">
+    <header class="bg-white fixed top-0 w-full z-50 border-b border-gray-200">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <!-- Logo -->
+            <a href="/views/index.html" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <img src="img/logo-rutaie.png" class="h-12" alt="Logo Ruta IE">
+            </a>
+
+            <!-- Botón de menú hamburguesa (visible solo en móvil) -->
+            <button id="menu-button" type="button"
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                aria-controls="navbar-sticky" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" fill="none" viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 1h15M1 7h15M1 13h15" />
+                </svg>
+            </button>
+
+            <!-- Menú de navegación -->
+            <nav class="hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+                <ul
+                    class="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
+                    <li>
+                        <a href="/objetivo"
+                            class="block py-2 px-3 text-gray-900 rounded md:p-0 hover:text-indigo-500 custom-hover-underline">OBJETIVO</a>
+                    </li>
+                    <li>
+                        <a href="/proposito"
+                            class="block py-2 px-3 text-gray-900 rounded md:p-0 hover:text-indigo-500 custom-hover-underline">PROPÓSITO</a>
+                    </li>
+                    <li>
+                        <a href="/nosotros"
+                            class="block py-2 px-3 text-gray-900 rounded md:p-0 hover:text-indigo-500 custom-hover-underline">NOSOTROS</a>
+                    </li>
+                    <li>
+                        <a href="/contacto"
+                            class="block py-2 px-3 text-gray-900 rounded md:p-0 hover:text-indigo-500 custom-hover-underline">CONTACTO</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Botón de Login -->
+            <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <a href="/login" title="login"
+                    class="text-white bg-indigo-500 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center">
+                    LOGIN
+                </a>
             </div>
         </div>
-    </div>
+    </header>
+    <main>
+        <div class="vh-100 d-flex justify-content-center align-items-center">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <center>
+                            <h2 class="card-title">Inicio de Sesión</h2>
+                        </center>
+                    </div>
+                    <form id="loginForm" action="/login" method="post">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="rut" name="rut" placeholder="Usuario" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" id="clave" name="clave" placeholder="Contraseña"
+                                required>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Ingresar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.x.x/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/login.js"></script>
+    <script src="js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/splitting@1.0.5/dist/splitting.min.js"></script>
 </body>
 
 </html>
