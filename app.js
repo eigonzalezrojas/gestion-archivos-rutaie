@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 
 const app = express();
+require('dotenv').config();
+
 
 //start - Configuración para servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
@@ -52,10 +54,10 @@ const mysql = require('mysql');
 const port = 3000;
 const connection = mysql.createConnection({
   charset : 'utf8mb4',
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'rutaie-utalca'
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
 });
 
 connection.connect(error => {
