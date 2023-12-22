@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         e.preventDefault();
 
         const formData = {
-            to: 'eithelgonzalezrojas@gmail.com',
+            to: 'catalina.letelier@utalca.cl',
             subject: 'Formulario sitio web',
             text: `Nombre: ${document.getElementById('name').value}, 
                    Email: ${document.getElementById('email').value}, 

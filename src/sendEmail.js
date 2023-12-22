@@ -1,9 +1,6 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-console.log(process.env.EMAIL_USER);
-console.log(process.env.EMAIL_PASSWORD);
-
 
 // Enviar correo - contacto
 let transporter = nodemailer.createTransport({
