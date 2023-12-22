@@ -3,8 +3,11 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const sendEmail = require('./src/sendEmail');
+
 
 const app = express();
+app.use(express.json());
 require('dotenv').config();
 
 
@@ -351,6 +354,18 @@ app.get('/obtener-archivos', (req, res) => {
       res.json(results);
   });
 });
+
+
+// Enviar correo desde Contacto
+app.post('/send-mail', (req, res) => {
+  const { to, subject, text } = req.body;
+
+  sendEmail(to, subject, text)
+      .then(() => res.status(200).send('Email enviado con éxito'))
+      .catch(error => res.status(500).send('Error al enviar email'));
+});
+
+
 
 
 
